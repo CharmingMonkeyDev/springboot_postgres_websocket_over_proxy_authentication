@@ -1,0 +1,99 @@
+server:
+  port: 8090
+  servlet:
+    session:
+      cookie:
+        name: JWT_SESSIONID
+
+spring:
+  main:
+    banner-mode: console
+  #datasource-primary:
+    #type: com.zaxxer.hikari.HikariDataSource
+    #url: ${SPRING_DATASOURCE_URL_KEYCLOAK:jdbc:postgresql://localhost:5432/keycloak}
+    #username: postgres
+    #password: gechit
+    #driverClassName: org.postgresql.Driver
+    #hikari:
+      #poolName: Hikari
+      #auto-commit: false
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/inhome}
+    username: inhomeuser
+    password: gechit
+    driverClassName: org.postgresql.Driver
+    hikari:
+      poolName: Hikari
+      auto-commit: false
+    #data: classpath:data.sql
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  flyway:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/inhome}
+    schemas: core, domain, meta
+    user: inhomeuser
+    password: gechit
+  mail:
+    host: ssl0.ovh.net
+    username: support360inhome@sunshineoxygen.com
+    password: Sunshineoxygensupport123
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+            port: 587
+            #socketFactory:
+          #port: 587
+          #class: javax.net.ssl.SSLSocketFactory
+  jackson:
+    serialization:
+      indent-output: true
+      fail-on-empty-beans: false
+  devtools:
+    restart:
+      log-condition-evaluation-delta: false
+      enabled: true
+security:
+  oauth2:
+    client:
+      client-id: android-client
+      client-secret: android-client
+      access-token-uri: ${AUTH_SERVER_URL:http://localhost:8443}/oauth/token
+      user-authorization-uri: ${AUTH_SERVER_URL:http://localhost:8443}/oauth/authorize
+      scope: read,write,trust
+      grant-type: client_credentials
+    resource:
+      id: resource_id
+      # URI of the user endpoint.
+      userInfoUri: ${RESOURCE_URL:http://localhost:8090}/api/v1/customer/me
+      # URI of the token decoding endpoint.
+      tokenInfoUri: ${AUTH_SERVER_URL:http://localhost:8443}/oauth/check_token
+application:
+  async:
+    core-pool-size: 10
+    max-pool-size: 50
+    queue-capacity: 10000
+
+aws:
+  accessKey: AKIA5RAIW7BVPU67FK6X
+  secretKey: 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
+  bucket: 360inhome
+app:
+  base-url: ${BASE_URL:http://127.0.0.1:8090}
+  frontend-url: ${FRONTEND_URL:http://localhost:3000}
+  loginurlwithoutotp: ${AUTH_SERVER_URL:http://localhost:8443}/oauth/token
+  loginurlwithotp: ${AUTH_SERVER_URL:http://localhost:8443}/api/v1/otp/oauth/login
+  logout: ${AUTH_SERVER_URL:http://localhost:8443}/api/v1/otp/oauth/logout
+  createuser: ${AUTH_SERVER_URL:http://localhost:8443}/api/v1/admin/customer/create
+  updatepassword: ${AUTH_SERVER_URL:http://localhost:8443}/api/v1/admin/customer/updatepassword
+  getOtp: ${AUTH_SERVER_URL:http://localhost:8443}/api/v1/otp/oauth/getOtp
+  verifyOtp: ${AUTH_SERVER_URL:http://localhost:8443}/api/v1/otp/oauth/verifyOtp
+  oauth2:
+    client-id: external-server
+    client-secret: external-server
+
+
